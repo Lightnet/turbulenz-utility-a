@@ -1,0 +1,16 @@
+{
+  "name": "turbulenz-utility-a",
+  "main": "./lib/turbulenz-utility-a",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "activationCommands": {
+    "atom-workspace": "turbulenz-utility-a:toggle"
+  },
+  "repository": "https://github.com/atom/turbulenz-utility-a",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+  }
+}
