@@ -33,10 +33,15 @@ class TurbulenzUtilityAView
     #Toolbar
     @turbulenzutilityaToolBarView = new TurbulenzUtilityAToolBarView()
     #atom.workspaceView.append(@turbulenzutilityaToolBarView)
-    atom.workspaceView.appendToTop(@turbulenzutilityaToolBarView)
+    #atom.workspaceView.appendToTop(@turbulenzutilityaToolBarView)
+    atom.workspace.addTopPanel({item:@turbulenzutilityaToolBarView})
+
     #Console
     @turbulenzutilityaConsoleView = new TurbulenzUtilityAConsoleView()
-    atom.workspaceView.appendToBottom(@turbulenzutilityaConsoleView)
+    #atom.workspaceView.appendToBottom(@turbulenzutilityaConsoleView)
+    #atom.workspace.addBottomPanel(@turbulenzutilityaConsoleView)
+    atom.workspace.addBottomPanel({item:@turbulenzutilityaConsoleView})
+    #console.log
 
     # Register command that toggles this view
     atom.commands.add 'atom-workspace', 'turbulenz-utility-a:toggle': => @toggle()

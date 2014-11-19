@@ -13,7 +13,8 @@
 TurbulenzUtilityAView = require './turbulenz-utility-a-view'
 
 module.exports =
-  configDefaults:
+  #configDefaults:
+  config:
     showtoolbar: false
     showconsole: false
 

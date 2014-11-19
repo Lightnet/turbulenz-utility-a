@@ -13,7 +13,10 @@
 AnsiFilter = require 'ansi-to-html'
 _ = require 'underscore'
 
-{View,BufferedProcess,$$} = require 'atom'
+{View,BufferedProcess} = require 'atom'
+
+{$} = require 'space-pen'
+
 
 module.exports =
 class TurbulenzUtilityAConsoleView extends View
@@ -51,6 +54,8 @@ class TurbulenzUtilityAConsoleView extends View
     atom.workspaceView.command 'turbulenz-utility-a:close-console', => @toggleViewOptions 'hide'
     #atom.workspaceView.prependToTop this
     @toggleViewOptions 'hide'
+
+    #console.log $
 
   msgconsole:->
     console.log "test"
@@ -128,7 +133,7 @@ class TurbulenzUtilityAConsoleView extends View
     line = _.escape(line)
     line = @ansiFilter.toHtml(line)
 
-    @output.append $$ ->
+    @output.append $ ->
       @pre class: "line #{css}", =>
         @raw line
   defaultRun: ->

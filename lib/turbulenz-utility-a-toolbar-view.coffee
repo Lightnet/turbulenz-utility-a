@@ -10,9 +10,9 @@
 
 ###
 
-AnsiFilter = require 'ansi-to-html'
-_ = require 'underscore'
-{View,BufferedProcess,$$} = require 'atom'
+#AnsiFilter = require 'ansi-to-html'
+#_ = require 'underscore'
+{View,BufferedProcess} = require 'atom'
 
 module.exports =
 class TurbulenzUtilityAToolBarView extends View
@@ -23,24 +23,35 @@ class TurbulenzUtilityAToolBarView extends View
       @span class: 'heading-status icon-terminal', outlet: 'icon_terimal', click: 'toggleconsole'
       @span class: 'heading-title', outlet: 'title'
       @span class: 'heading-status', outlet: 'status'
-      @label 'Assets:'
+      @span
+
       @span class: 'heading-status icon-file-binary', outlet: 'icon_playbackplay', click: ''
-      @label 'Scripts:'
-      @span class: 'heading-status icon-playback-play', outlet: 'icon_playbackplay', click: ''
-      @span class: 'heading-status icon-primitive-square', outlet: 'icon_stop', click: ''
-      @span class: 'heading-status icon-browser', outlet: 'icon_playbackplay', click: ''
+      @label 'Assets:'
 
-      @label 'Server:'
+      @label '| Scripts:'
+
+      @span class: 'heading-status icon-gear', outlet: '', click: ''
+      @label 'Build'
+      @span class: 'heading-status icon-code', outlet: '', click: ''
+      @label ' File'
+      @span class: 'heading-status icon-file-code', outlet: '', click: ''
+      @label ' Compile'
+      @span
+      @label '| Server'
       @span class: 'heading-status icon-playback-play', outlet: 'icon_playbackplay', click: ''
+      @label 'Run:'
       @span class: 'heading-status icon-primitive-square', outlet: 'icon_stop', click: ''
+      @label 'Stop:'
       @span class: 'heading-status icon-sync', outlet: 'icon_restart', click: ''
+      @label 'Reload:'
+      @span class: 'heading-status icon-browser', outlet: 'icon_restart', click: ''
+      @label 'Browser:'
       @span class: "heading-close icon-remove-close pull-right", click: 'close'
-
       @span class: "heading-close icon-jump-up pull-right", outlet: 'icon_togglemenu', click: 'togglemainmenu'
 
   initialize: (@runOptions) ->
     #console.log "init toolbar"
-    @ansiFilter = new AnsiFilter
+    #@ansiFilter = new AnsiFilter
     @title.text  'Turbulenz ToolBar'
     #@setStatus 'stop'
     # Bind commands
@@ -72,7 +83,7 @@ class TurbulenzUtilityAToolBarView extends View
       when 'show' then this.show()
       when 'hide' then this.hide()
       else this.toggle()
-
+  #hide view
   close: ->
     this.hide()
   #display status icon
