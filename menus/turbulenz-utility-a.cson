@@ -1,4 +1,17 @@
+###
+
+  Project Name: turbulenz-utility-a package
+  Date:2014.11.17
+  Created by: Lightnet
+  Link: https://github.com/Lightnet/turbulenz-utility-a
+  license: MIT
+
+  Check for more information on readme.txt file.
+
+###
+
 # See https://atom.io/docs/latest/creating-a-package#menus for more details
+
 'context-menu':
   'atom-text-editor': [
     {
@@ -10,11 +23,19 @@
   {
     'label': 'Packages'
     'submenu': [
-      'label': 'turbulenz-utility-a'
+      'label': 'Turbulenz Utility A'
       'submenu': [
         {
           'label': 'Toggle'
           'command': 'turbulenz-utility-a:toggle'
+        },
+        {
+          'label': 'ToolBar'
+          'command': 'turbulenz-utility-a:toggletoolbar'
+        },
+        {
+          'label': 'Console'
+          'command': 'turbulenz-utility-a:toggle-console'
         }
       ]
     ]

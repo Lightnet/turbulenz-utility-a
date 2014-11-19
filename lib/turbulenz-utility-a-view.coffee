@@ -1,5 +1,23 @@
+###
+
+  Project Name: turbulenz-utility-a package
+  Date:2014.11.17
+  Created by: Lightnet
+  Link: https://github.com/Lightnet/turbulenz-utility-a
+  license: MIT
+
+  Check for more information on readme.txt file.
+
+###
+
+TurbulenzUtilityAToolBarView = require './turbulenz-utility-a-toolbar-view'
+TurbulenzUtilityAConsoleView = require './turbulenz-utility-a-console-view'
+
+
 module.exports =
 class TurbulenzUtilityAView
+  turbulenzutilityaToolBarView: null
+
   constructor: (serializeState) ->
     # Create root element
     @element = document.createElement('div')
@@ -10,6 +28,15 @@ class TurbulenzUtilityAView
     message.textContent = "The TurbulenzUtilityA package is Alive! It's ALIVE!"
     message.classList.add('message')
     @element.appendChild(message)
+
+    #init view
+    #Toolbar
+    @turbulenzutilityaToolBarView = new TurbulenzUtilityAToolBarView()
+    #atom.workspaceView.append(@turbulenzutilityaToolBarView)
+    atom.workspaceView.appendToTop(@turbulenzutilityaToolBarView)
+    #Console
+    @turbulenzutilityaConsoleView = new TurbulenzUtilityAConsoleView()
+    atom.workspaceView.appendToBottom(@turbulenzutilityaConsoleView)
 
     # Register command that toggles this view
     atom.commands.add 'atom-workspace', 'turbulenz-utility-a:toggle': => @toggle()
