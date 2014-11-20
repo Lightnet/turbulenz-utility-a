@@ -13,7 +13,6 @@
 TurbulenzUtilityAToolBarView = require './turbulenz-utility-a-toolbar-view'
 TurbulenzUtilityAConsoleView = require './turbulenz-utility-a-console-view'
 
-
 module.exports =
 class TurbulenzUtilityAView
   turbulenzutilityaToolBarView: null
@@ -38,9 +37,11 @@ class TurbulenzUtilityAView
 
     #Console
     @turbulenzutilityaConsoleView = new TurbulenzUtilityAConsoleView()
+    atom.workspace.addBottomPanel({item:@turbulenzutilityaConsoleView})
+
     #atom.workspaceView.appendToBottom(@turbulenzutilityaConsoleView)
     #atom.workspace.addBottomPanel(@turbulenzutilityaConsoleView)
-    atom.workspace.addBottomPanel({item:@turbulenzutilityaConsoleView})
+
     #console.log
 
     # Register command that toggles this view

@@ -16,7 +16,7 @@
 
 module.exports =
 class TurbulenzUtilityAToolBarView extends View
-  @bufferedProcess: null
+  #@bufferedProcess: null
 
   @content: ->
     @div class: 'panel-heading padded heading header-view', => #header
@@ -38,15 +38,16 @@ class TurbulenzUtilityAToolBarView extends View
       @label ' Compile'
       @span
       @label '| Server'
-      @span class: 'heading-status icon-playback-play', outlet: 'icon_playbackplay', click: ''
-      @label 'Run:'
-      @span class: 'heading-status icon-primitive-square', outlet: 'icon_stop', click: ''
-      @label 'Stop:'
-      @span class: 'heading-status icon-sync', outlet: 'icon_restart', click: ''
-      @label 'Reload:'
-      @span class: 'heading-status icon-browser', outlet: 'icon_restart', click: ''
-      @label 'Browser:'
+      @span class: 'heading-status icon-playback-play', outlet: 'icon_playbackplay', click: 'trigger_runserver'
+      @label 'Run'
+      @span class: 'heading-status icon-primitive-square', outlet: 'icon_stop', click: 'trigger_stopserver'
+      @label 'Stop'
+      @span class: 'heading-status icon-sync', outlet: 'icon_restart', click: 'trigger_restartserver'
+      @label 'Reload'
+      @span class: 'heading-status icon-browser', outlet: 'icon_restart', click: 'trigger_browserserver'
+      @label 'Browser'
       @span class: "heading-close icon-remove-close pull-right", click: 'close'
+      #Atom menu toolbar
       @span class: "heading-close icon-jump-up pull-right", outlet: 'icon_togglemenu', click: 'togglemainmenu'
 
   initialize: (@runOptions) ->
@@ -59,6 +60,24 @@ class TurbulenzUtilityAToolBarView extends View
     atom.workspaceView.command 'turbulenz-utility-a:hidetoolbar', => @ToggleView 'hide'
     atom.workspaceView.command 'turbulenz-utility-a:showtoolbar', => @ToggleView 'show'
     #@ToggleView 'hide'
+
+  trigger_runserver:->
+    atom.workspaceView.trigger 'turbulenz-utility-a:runserver'
+
+  trigger_stopserver:->
+    atom.workspaceView.trigger 'turbulenz-utility-a:stopserver'
+
+  trigger_restartserver:->
+    atom.workspaceView.trigger 'turbulenz-utility-a:restartserver'
+
+  trigger_browserserver:->
+    #atom.workspaceView.trigger 'turbulenz-utility-a:browserserver'
+    BrowserWindow = require('remote').require 'browser-window'
+    mainWindow = new BrowserWindow({width: 800, height: 600, frame: true });
+    mainWindow.loadUrl('https://github.com/Lightnet/turbulenz-utility-a')
+    mainWindow.show()
+
+
   #check if main menu toolbar is displayable.
   togglemainmenu:->
     check = atom.config.get "core.autoHideMenuBar"

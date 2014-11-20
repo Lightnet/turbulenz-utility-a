@@ -12,15 +12,15 @@
 
 AnsiFilter = require 'ansi-to-html'
 _ = require 'underscore'
-
 {View,BufferedProcess} = require 'atom'
-
 {$} = require 'space-pen'
 
 
 module.exports =
 class TurbulenzUtilityAConsoleView extends View
   @bufferedProcess: null
+  filecompilemode:''
+  bhideConsoleLog: false
 
   @content: ->
     @div =>
@@ -32,6 +32,10 @@ class TurbulenzUtilityAConsoleView extends View
           class: 'heading-close icon-remove-close pull-right'
           outlet: 'closeButton'
           click: 'close'
+        @span
+          class: "heading-close icon-jump-down pull-right"
+          outlet: 'icon_toggleconsole'
+          click: 'toggleoutput'
         # Display layout and outlets
       @div class: 'block', =>
         css = 'tool-panel panel panel-bottom padding script-view
@@ -52,23 +56,55 @@ class TurbulenzUtilityAConsoleView extends View
     atom.workspaceView.command 'turbulenz-utility-a:toggle-console', => @toggleViewOptions()
     atom.workspaceView.command 'turbulenz-utility-a:open-console', => @toggleViewOptions()
     atom.workspaceView.command 'turbulenz-utility-a:close-console', => @toggleViewOptions 'hide'
+    atom.workspaceView.command 'turbulenz-utility-a:runserver', => @runServer()
+    atom.workspaceView.command 'turbulenz-utility-a:stopserver', => @stopServer()
+    atom.workspaceView.command 'turbulenz-utility-a:restartserver', => @restartServer()
+
     #atom.workspaceView.prependToTop this
     @toggleViewOptions 'hide'
 
     #console.log $
+  toggleoutput: ->
+    @icon_toggleconsole.removeClass 'icon-jump-up icon-jump-down'
+    console.log "toggle output"
+    if @script.isVisible() == true
+      @icon_toggleconsole.addClass 'icon-jump-up'
+      @script.hide()
+    else
+      @icon_toggleconsole.addClass 'icon-jump-down'
+      @script.show()
 
+
+  runServer: ->
+    console.log "runserver"
+    #editor = atom.workspace.getActiveTextEditor()
+    #console.log editor.getUri()
+    #console.log editor.getTitle()
+    console.log @run('tsc','','')
+  stopServer: ->
+    console.log "stopServer"
+  restartServer: ->
+    console.log "restartServer"
   msgconsole:->
     console.log "test"
     @output.append "test"
-
   toggleViewOptions: (command) ->
     #console.log command
     #@CustomScriptBuildsConfigView.hide()
-    switch command
-      when 'show' then this.show()
-      when 'hide' then this.hide()
-      else this.toggle()
-    console.log "toggle console"
+    #console.log command
+    if command == 'show'
+      @.show()
+    else if command == 'hide'
+      @.hide()
+    else
+      #@.toggle()
+      if @.isVisible() == true
+        @.hide()
+      else
+        @.show()
+    #console.log "toggle console"
+    #console.log @.isVisible()
+    #console.log @
 
   close: ->
     atom.workspaceView.trigger 'turbulenz-utility-a:close-console'
@@ -97,7 +133,15 @@ class TurbulenzUtilityAConsoleView extends View
     options =
       cwd: @getCwd()
     #args = ['help']
-    args = ['cd']
+    #args = ['cd']
+    #check scirpt package for atom.
+    #args = codeContext.shebangCommandArgs().concat args
+    args = ''
+
+    editor = atom.workspace.getActiveTextEditor()
+    console.log editor.getUri()
+    console.log editor.getTitle()
+    args = [editor.getTitle()]
 
     exit = (returnCode) =>
       if returnCode is 0
@@ -111,8 +155,16 @@ class TurbulenzUtilityAConsoleView extends View
     @bufferedProcess = new BufferedProcess({
       command, args, options, stdout, stderr, exit
     })
-    @toggleScriptOptions 'show'
+
+    @toggleViewOptions 'show'
     console.log @bufferedProcess
+
+    @bufferedProcess.process.on 'error', (nodeError) =>
+      @output.append $ ->
+        @h1 'Unable to run'
+        @pre _.escape command
+        @h2 'Is it on your path?'
+        @pre "PATH: #{_.escape process.env.PATH}"
 
   getCwd: ->
     #if not @runOptions.workingDirectory? or @runOptions.workingDirectory is ''
@@ -136,6 +188,7 @@ class TurbulenzUtilityAConsoleView extends View
     @output.append $ ->
       @pre class: "line #{css}", =>
         @raw line
+
   defaultRun: ->
     #@resetView()
     #codeContext = @buildCodeContext() # Until proven otherwise
@@ -143,19 +196,14 @@ class TurbulenzUtilityAConsoleView extends View
 
   resetView: (title = 'Loading...') ->
     # Display window and load message
-
     # First run, create view
     atom.workspaceView.prependToBottom this unless @hasParent()
-
     # Close any existing process and start a new one
     @stop()
-
     @title.text title
     @setStatus 'start'
-
     # Get script view ready
     @output.empty()
-
 
   close: ->
     # Stop any running process and dismiss window
