@@ -12,15 +12,17 @@
 
 AnsiFilter = require 'ansi-to-html'
 _ = require 'underscore'
-{View,BufferedProcess} = require 'atom'
-{$} = require 'space-pen'
+# {View,BufferedProcess} = require 'atom'
+# {View,BufferedProcess,$} = require 'atom'
+{View, BufferedProcess, $$} = require 'atom'
+# {$} = require 'space-pen'
+# {$} = require 'jquery'
 
 
 module.exports =
 class TurbulenzUtilityAConsoleView extends View
   @bufferedProcess: null
-  filecompilemode:''
-  bhideConsoleLog: false
+  self: this
 
   @content: ->
     @div =>
@@ -60,8 +62,16 @@ class TurbulenzUtilityAConsoleView extends View
     atom.workspaceView.command 'turbulenz-utility-a:stopserver', => @stopServer()
     atom.workspaceView.command 'turbulenz-utility-a:restartserver', => @restartServer()
 
+    #compile main file to run javascript.
+    atom.workspaceView.command 'turbulenz-utility-a:main_compile', => @main_compile()
+    #compile file to test the functions to see if there no error.
+    atom.workspaceView.command 'turbulenz-utility-a:file_compile', => @file_compile()
+
     #atom.workspaceView.prependToTop this
     @toggleViewOptions 'hide'
+    #console.log $$
+    #console.log(@ansiFilter.toHtml('error TS6054: File &#x27;hellworld.js&#x27; must have extension &#x27;.ts&#x27; or &#x27;.d.ts&#x27;.'));
+    #console.log self
 
     #console.log $
   toggleoutput: ->
@@ -74,13 +84,28 @@ class TurbulenzUtilityAConsoleView extends View
       @icon_toggleconsole.addClass 'icon-jump-down'
       @script.show()
 
+  main_compile:->
+    console.log "main_compile"
+    bmainfile = atom.config.get "turbulenz-utility-a.bMainFile"
+    #@run('tsc','','')
+
+
+  file_compile:->
+    console.log "file_compile"
+    bmainfile = atom.config.get "turbulenz-utility-a.bMainFile"
+
+
+  html_compile:->
+    console.log "html_compile"
+
 
   runServer: ->
     console.log "runserver"
     #editor = atom.workspace.getActiveTextEditor()
     #console.log editor.getUri()
     #console.log editor.getTitle()
-    console.log @run('tsc','','')
+    #console.log @run('tsc','','')
+    @run('tsc','','')
   stopServer: ->
     console.log "stopServer"
   restartServer: ->
@@ -126,7 +151,7 @@ class TurbulenzUtilityAConsoleView extends View
 
   run: (command, extraArgs, codeContext) ->
     atom.emit 'achievement:unlock', msg: 'Homestar Runner'
-
+    startTime = new Date()
     stdout = (output) => @display 'stdout', output
     stderr = (output) => @display 'stderr', output
 
@@ -157,10 +182,16 @@ class TurbulenzUtilityAConsoleView extends View
     })
 
     @toggleViewOptions 'show'
-    console.log @bufferedProcess
+    #console.log @bufferedProcess
+    #console.log $
+    #@output.append('Unable to run' )
+    @bufferedProcess.process.on 'exit', =>
+      #console.log("Finished", new Date().getTime());
+      executionTime = (new Date().getTime() - startTime.getTime()) / 1000
+      @display 'stdout', '[Finished in '+executionTime.toString()+'s]'
 
     @bufferedProcess.process.on 'error', (nodeError) =>
-      @output.append $ ->
+      @output.append $$ ->
         @h1 'Unable to run'
         @pre _.escape command
         @h2 'Is it on your path?'
@@ -181,11 +212,24 @@ class TurbulenzUtilityAConsoleView extends View
       @bufferedProcess.kill()
 
   display: (css, line) ->
-    console.log line
+    #console.log line
     line = _.escape(line)
-    line = @ansiFilter.toHtml(line)
+    #console.log line
+    #console.log @ansiFilter
+    console.log @ansiFilter
 
-    @output.append $ ->
+    line = @ansiFilter.toHtml line
+    #console.log @ansiFilter.pushText(line)
+    #console.log @output
+    #console.log $$
+    #console.log line
+    #message = document.createElement('div')
+    #message.textContent = line
+    #@output.append message
+    #console.log message
+
+
+    @output.append $$ ->
       @pre class: "line #{css}", =>
         @raw line
 

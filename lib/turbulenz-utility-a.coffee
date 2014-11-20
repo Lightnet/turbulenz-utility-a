@@ -17,6 +17,7 @@ module.exports =
   config:
     showtoolbar: false
     showconsole: false
+    bMainFile:false
 
   turbulenzUtilityAView: null
 

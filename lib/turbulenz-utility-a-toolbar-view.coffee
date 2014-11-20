@@ -19,6 +19,8 @@ class TurbulenzUtilityAToolBarView extends View
   #@bufferedProcess: null
 
   @content: ->
+    #css = 'btn inline-block-tight'
+    css = 'btn inline-block-tight'
     @div class: 'panel-heading padded heading header-view', => #header
       @span class: 'heading-status icon-terminal', outlet: 'icon_terimal', click: 'toggleconsole'
       @span class: 'heading-title', outlet: 'title'
@@ -31,11 +33,14 @@ class TurbulenzUtilityAToolBarView extends View
       @label '| Scripts:'
 
       @span class: 'heading-status icon-gear', outlet: '', click: ''
+      @button class: "btn #{css}", click: 'trigger_maincompile', 'Main'
       @label 'Build'
       @span class: 'heading-status icon-code', outlet: '', click: ''
+      @button class: "btn #{css}", click: 'trigger_filecompile', 'File'
       @label ' File'
       @span class: 'heading-status icon-file-code', outlet: '', click: ''
       @label ' Compile'
+
       @span
       @label '| Server'
       @span class: 'heading-status icon-playback-play', outlet: 'icon_playbackplay', click: 'trigger_runserver'
@@ -60,6 +65,12 @@ class TurbulenzUtilityAToolBarView extends View
     atom.workspaceView.command 'turbulenz-utility-a:hidetoolbar', => @ToggleView 'hide'
     atom.workspaceView.command 'turbulenz-utility-a:showtoolbar', => @ToggleView 'show'
     #@ToggleView 'hide'
+
+  trigger_maincompile:->
+    atom.workspaceView.trigger 'turbulenz-utility-a:main_compile'
+
+  trigger_filecompile:->
+    atom.workspaceView.trigger 'turbulenz-utility-a:file_compile'
 
   trigger_runserver:->
     atom.workspaceView.trigger 'turbulenz-utility-a:runserver'
