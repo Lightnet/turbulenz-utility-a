@@ -30,6 +30,10 @@
           'command': 'turbulenz-utility-a:toggle'
         },
         {
+          'label': 'Assets'
+          'command': 'turbulenz-utility-a:toggle-assets'
+        },
+        {
           'label': 'ToolBar'
           'command': 'turbulenz-utility-a:toggletoolbar'
         },

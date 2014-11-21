@@ -56,8 +56,10 @@ class TurbulenzUtilityAConsoleView extends View
     atom.workspaceView.command 'turbulenz-utility-a:kill-process', => @stop()
     atom.workspaceView.command 'turbulenz-utility-a:msg-console', => @msgconsole()
     atom.workspaceView.command 'turbulenz-utility-a:toggle-console', => @toggleViewOptions()
-    atom.workspaceView.command 'turbulenz-utility-a:open-console', => @toggleViewOptions()
-    atom.workspaceView.command 'turbulenz-utility-a:close-console', => @toggleViewOptions 'hide'
+    atom.workspaceView.command 'turbulenz-utility-a:open-console', =>
+      @toggleViewOptions 'show'
+    atom.workspaceView.command 'turbulenz-utility-a:close-console', =>
+      @toggleViewOptions 'hide'
     atom.workspaceView.command 'turbulenz-utility-a:runserver', => @runServer()
     atom.workspaceView.command 'turbulenz-utility-a:stopserver', => @stopServer()
     atom.workspaceView.command 'turbulenz-utility-a:restartserver', => @restartServer()

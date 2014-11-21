@@ -14,6 +14,8 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
-	"space-pen": "latest"
+	"space-pen": "latest",
+	"jquery": "latest",
+	"ansi-to-html": "latest"
   }
 }

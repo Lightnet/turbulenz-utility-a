@@ -12,10 +12,13 @@
 
 TurbulenzUtilityAToolBarView = require './turbulenz-utility-a-toolbar-view'
 TurbulenzUtilityAConsoleView = require './turbulenz-utility-a-console-view'
+TurbulenzUtilityAAssetsView = require './turbulenz-utility-a-assets-view'
 
 module.exports =
 class TurbulenzUtilityAView
   turbulenzutilityaToolBarView: null
+  turbulenzutilityaConsoleView: null
+  turbulenzutilityaAssetsView: null
 
   constructor: (serializeState) ->
     # Create root element
@@ -38,9 +41,12 @@ class TurbulenzUtilityAView
     #Console
     @turbulenzutilityaConsoleView = new TurbulenzUtilityAConsoleView()
     atom.workspace.addBottomPanel({item:@turbulenzutilityaConsoleView})
-
     #atom.workspaceView.appendToBottom(@turbulenzutilityaConsoleView)
     #atom.workspace.addBottomPanel(@turbulenzutilityaConsoleView)
+
+    @turbulenzutilityaAssetsView = new TurbulenzUtilityAAssetsView()
+    atom.workspace.addTopPanel({item:@turbulenzutilityaAssetsView})
+
 
     #console.log
 
