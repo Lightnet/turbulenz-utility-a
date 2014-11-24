@@ -68,7 +68,7 @@ class TurbulenzUtilityAToolBarView extends View
     atom.workspaceView.command 'turbulenz-utility-a:toggletoolbar', => @ToggleView()
     atom.workspaceView.command 'turbulenz-utility-a:hidetoolbar', => @ToggleView 'hide'
     atom.workspaceView.command 'turbulenz-utility-a:showtoolbar', => @ToggleView 'show'
-    #@ToggleView 'hide'
+    @ToggleView 'hide'
 
   trigger_maincompile:->
     atom.workspaceView.trigger 'turbulenz-utility-a:main_compile'

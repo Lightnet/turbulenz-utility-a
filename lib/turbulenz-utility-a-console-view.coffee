@@ -210,7 +210,7 @@ class TurbulenzUtilityAConsoleView extends View
     # Kill existing process if available
     if @bufferedProcess? and @bufferedProcess.process?
       @display 'stdout', '^C'
-      @headerView.setStatus 'kill'
+      #@headerView.setStatus 'kill'
       @bufferedProcess.kill()
 
   display: (css, line) ->
